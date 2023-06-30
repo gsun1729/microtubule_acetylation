@@ -4,6 +4,7 @@
 #include <iterator>
 #include <cassert>
 #include <algorithm>
+#include <chrono>
 
 #pragma once
 /*
@@ -24,5 +25,7 @@ Generates randomly true or false with equal probability
 */
 bool randomBool();
 
-
+/*
+Generates a random gaussian variable sammpled from a distribution
+with a defined mean and standard deviation*/
 float randomGaussianVariable(float mean, float stdev);
