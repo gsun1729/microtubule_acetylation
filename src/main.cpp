@@ -45,6 +45,11 @@ int main(int argc, char *argv[])
       std::cout << particle->getPosition() << std::endl;
    }
 
+   Particle test = Particle(0,0,0.5);
+   for (int i = 0; i < 20; i ++){
+      std::cout<<test.HasReacted()<<std::endl;
+   }
+
    return 0;
    // std::vector<std::thread> threads;
 
