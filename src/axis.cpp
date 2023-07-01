@@ -1,8 +1,8 @@
 #include "axis.hpp"
 #include "probability.hpp"
 
-Hole::Hole(double pos, double width,
-		   double influxProb, double efluxProb)
+Hole::Hole(float pos, float width,
+		   float influxProb, float efluxProb)
 {
 	position_ = pos;
 	width_ = width;
@@ -44,7 +44,7 @@ float Hole::getInFluxProb() const
 {
 	return influxProbability_;
 }
-Axis::Axis(double length)
+Axis::Axis(float length)
 {
 	length_ = length;
 	start_position_ = 0;
@@ -70,7 +70,7 @@ void Axis::rmParticle(const Particle &particle)
                          particle_list_.end());
 }
 
-void Axis::moveParticles(double dt)
+void Axis::moveParticles(float dt)
 {
 	for (auto &p : particle_list_)
 	{

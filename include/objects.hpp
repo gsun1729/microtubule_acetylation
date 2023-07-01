@@ -1,25 +1,36 @@
+#include "objects.hpp"
+#include "config.hpp"
+#include "probability.hpp"
+#include "config.hpp"
+
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+#include <vector>
+#include <algorithm>
+
 #pragma once
 
 class Particle {
-    bool has_reacted_;
-    double p_reaction_;
-    double position_;
-    double diff_coeff_;
-    static int next_id;
+    float p_reaction_;
+    float position_;
+    float diff_coeff_;
+    static int next_id_;
     int id_;
 public:
     Particle();
-    Particle(double pos, double diff_coeff, double p_reaction);
+    Particle(float pos, float diff_coeff, float p_reaction);
     int getId() const { return id_; }
     // move the particle according to its diffusion coefficient
-    void Move(double dt); 
+    void Move(float dt); 
     
     
     bool HasReacted(); 
 
-    double getPosition() const;
+    float getPosition() const;
 
-    double ReturnDiffusionCoeff();
+    float getDiffusionCoeff() const;
+    float getRxnProbability() const;
 
     void PrintSelf();
 };
