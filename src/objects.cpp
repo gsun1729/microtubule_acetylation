@@ -10,19 +10,22 @@
 #include <algorithm>
 
 
-
+int Particle::next_id = 0; 
 
 const Config config;
 
 Particle::Particle(){
+	id_ = next_id++;
 	position_ = 0;
 	diff_coeff_ = config.diffusion_coefficient;
 	p_reaction_ = config.p_reaction;
+	
 
 }
 
 
 Particle::Particle(double pos, double diff_coeff, double p_reaction){
+	id_ = next_id++;
 	position_ = pos;
 	diff_coeff_ = diff_coeff;
 	p_reaction_ = p_reaction;
