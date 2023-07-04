@@ -18,7 +18,9 @@ public:
     float getRandomPosition() const;
     float getEFluxProb() const;
     float getInFluxProb() const;
-
+    void printPosition()const;
+    void printProbability()const;
+    void printSelf() const;
 };
 
 
@@ -28,15 +30,28 @@ class Axis {
     float length_;
     float start_position_;
     float end_position_;
+    float center_position_{0};
+
+    int num_holes_{-1};
+    float hole_width_{-1};
+    float hole_separation_{-1};
+
     std::vector<Hole> hole_list_;
     std::vector<std::shared_ptr<Particle>> particle_list_;
+
 public:
-    Axis(float length);
+    Axis();
+    Axis(float start_pos, float end_pos);
     void addHole(const Hole& hole);
+    void addHoles(int num_holes, float hole_width);
+    void addHoles(float hole_width, float hole_separation, float seed_pt);
     void addParticle(const Particle& particle);
     void rmParticle(const Particle& particle);
     // move all particles along the axis
     void moveParticles(float dt); 
     // handle influx/eflux of particles in each hole
     void handleHoles(); 
+    void printDimensions()const;
+    void printHoleLocations() const ;
+    void printAcetylationPoints();
 };
