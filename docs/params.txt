@@ -1,0 +1,14 @@
+MT length: 50 um
+MT lumen diameter: 15 nm
+αTAT1 diameter: 6 nm
+α-Tubulin diameter: 5 nm
+β-Tubulin diameter: 5 nm
+Lateral defects on MTs: 10-20 nm
+αTAT1 diffusion in 3D cytoplasm: 25 um2/s
+αTAT1 catalysis rate: 	kcat = 21.29 X 10-4/s
+			Km = 31.44 uM
+			KD = 45 uM
+αTAT1 1D diffusion: 0.27 um2/s
+Average interaction time between αTAT1 and MTs: 1.5s
+Average MT scanning length: 3 um
+Acetylation rate: 1.6/hr	
