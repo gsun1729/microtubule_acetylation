@@ -35,3 +35,10 @@
 build
 bin
 
+# ignore VSCode IDE files
+.vscode
+.DS_Store
+
+
+# ignore configuration files (for now)
+include/config.hpp
