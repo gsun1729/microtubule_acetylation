@@ -1,14 +1,3 @@
-#include "objects.hpp"
-#include "config.hpp"
-#include "probability.hpp"
-#include "config.hpp"
-
-#include <iostream>
-#include <iomanip>
-#include <cmath>
-#include <vector>
-#include <algorithm>
-
 #pragma once
 
 class Particle {
@@ -32,6 +21,6 @@ public:
     float getDiffusionCoeff() const;
     float getRxnProbability() const;
 
-    void PrintSelf();
+    void PrintSelf() const;
 };
 

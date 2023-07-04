@@ -60,7 +60,7 @@ float Particle::getRxnProbability() const{
 	return p_reaction_;
 }
 
-void Particle::PrintSelf(){
+void Particle::PrintSelf() const{
 	std::cout << std::setprecision(5)<< std::fixed;
 	std::cout << "position: " << position_ << "\t";
 	std::cout << "D: "<< diff_coeff_ << "\t";
