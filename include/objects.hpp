@@ -37,6 +37,7 @@ public:
     // check if a given particle is inside this hole
     bool isParticleInside(const Particle &p);
     float getCenterPosition() const;
+    float getWidth() const;
     float getRandomPosition() const;
     float getEFluxProb() const;
     float getInFluxProb() const;
@@ -62,11 +63,14 @@ class Axis
 public:
     Axis();
     Axis(float start_pos, float end_pos);
+    bool isHoleDuplicate(const Hole&hole);
     void addHole(const Hole &hole);
     void addHoles(int num_holes, float hole_width);
     void addHoles(float hole_width, float hole_separation, float seed_pt);
-    void addParticle(const Particle &particle);
-    void rmParticle(const Particle &particle);
+    const std::vector<Hole>& getHoles() const;
+    const std::vector<std::shared_ptr<Particle>>& getParticles() const;
+    void addParticle(std::shared_ptr<Particle> particle);
+    void rmParticle(std::shared_ptr<Particle> particle);
     // move all particles along the axis
     void moveParticles(float dt);
     // handle influx/eflux of particles in each hole
@@ -74,5 +78,5 @@ public:
     void printDimensions() const;
     void printHoleLocations() const;
     void printParticlePositions() const;
-    void printAcetylationPoints();
+    void printAcetylationPoints() const;
 };
