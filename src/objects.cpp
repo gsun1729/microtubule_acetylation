@@ -315,3 +315,15 @@ void Axis::printParticlePositions() const
         p->printSelf();
     }
 }
+
+void Axis::reactParticles() {
+    for (const auto &particle : particle_list_) {
+        if (particle->HasReacted()) {
+            marked_pts_.push_back(particle->getPosition());
+        }
+    }
+}
+
+const std::vector<float>& Axis::getMarkedPts() const {
+    return marked_pts_;
+}

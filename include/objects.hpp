@@ -58,6 +58,7 @@ class Axis
     float hole_separation_{-1};
 
     std::vector<Hole> hole_list_;
+    std::vector<float> marked_pts_;
     std::vector<std::shared_ptr<Particle>> particle_list_;
 
 public:
@@ -69,10 +70,12 @@ public:
     void addHoles(float hole_width, float hole_separation, float seed_pt);
     const std::vector<Hole>& getHoles() const;
     const std::vector<std::shared_ptr<Particle>>& getParticles() const;
+    const std::vector<float>& getMarkedPts() const;
     void addParticle(std::shared_ptr<Particle> particle);
     void rmParticle(std::shared_ptr<Particle> particle);
     // move all particles along the axis
     void moveParticles(float dt);
+    void reactParticles();
     // handle influx/eflux of particles in each hole
     void handleHoles();
     void printDimensions() const;
