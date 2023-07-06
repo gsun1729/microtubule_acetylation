@@ -13,35 +13,43 @@
 
 int main(int argc, char *argv[])
 {
-    // std::cout << config.diffusion_coefficient << std::endl;
-    std::cout << "=====" << std::endl;
-    SimulationDriver sim{0.01, 1.0};
-    sim.printSimulationHeader();
+    Config configs;
+
+    SimulationDriver sim{configs};
     sim.generateSimulation();
-    sim.printHoleLocations();
-    sim.printParticleLocations();
-    sim.printMarkedLocations();
-    sim.preSeedAtHoles();
 
-    std::cout << "=====" << std::endl;
-    sim.printTimestamp();
-    sim.printHoleLocations();
-    sim.printParticleLocations();
-    sim.printMarkedLocations();
+    // std::cout << config.diffusion_coefficient << std::endl;
+        // std::cout << "=====" << std::endl;
+        // SimulationDriver sim{config.time_step,
+        //                      config.record_per_s};
+        // sim.printSimulationHeader();
+        // sim.generateSimulation();
+        sim.printHoleLocations();
+        sim.printParticleLocations();
+        // sim.printMarkedLocations();
+        sim.preSeedAtHoles();
+        sim.runUntil(1.0);
 
+        std::cout << "=====" << std::endl;
     sim.advance();
-    std::cout << "=====" << std::endl;
     sim.printTimestamp();
     sim.printHoleLocations();
     sim.printParticleLocations();
-    sim.printMarkedLocations();
-    std::cout << "=====" << std::endl;
-    sim.runUntil(.05, false);
-    std::cout << "=====" << std::endl;
-    sim.printTimestamp();
-    sim.printHoleLocations();
-    sim.printParticleLocations();
-    sim.printMarkedLocations();
+    // sim.printMarkedLocations();
+
+    // sim.advance();
+    // std::cout << "=====" << std::endl;
+    // sim.printTimestamp();
+    // sim.printHoleLocations();
+    // sim.printParticleLocations();
+    // sim.printMarkedLocations();
+    // std::cout << "=====" << std::endl;
+    // sim.runUntil(.05, false);
+    // std::cout << "=====" << std::endl;
+    // sim.printTimestamp();
+    // sim.printHoleLocations();
+    // sim.printParticleLocations();
+    // sim.printMarkedLocations();
     // std::cout << "=====" << std::endl;
     // Axis a;
     // a.printDimensions();
