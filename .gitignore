@@ -42,3 +42,5 @@ bin
 
 # ignore configuration files (for now)
 include/config.hpp
+
+experiments/*.txt

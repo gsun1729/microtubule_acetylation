@@ -14,27 +14,16 @@
 int main(int argc, char *argv[])
 {
     Config configs;
-
-    SimulationDriver sim{configs};
-    sim.generateSimulation();
-
-    // std::cout << config.diffusion_coefficient << std::endl;
-        // std::cout << "=====" << std::endl;
-        // SimulationDriver sim{config.time_step,
-        //                      config.record_per_s};
-        // sim.printSimulationHeader();
-        // sim.generateSimulation();
-        sim.printHoleLocations();
-        sim.printParticleLocations();
-        // sim.printMarkedLocations();
+    for (int i = 0; i < 2; i++)
+    {   
+        configs.simulation_number += 1;
+        SimulationDriver sim{configs};
+        sim.generateSimulation();
         sim.preSeedAtHoles();
-        sim.runUntil(1.0);
-
-        std::cout << "=====" << std::endl;
-    sim.advance();
-    sim.printTimestamp();
-    sim.printHoleLocations();
-    sim.printParticleLocations();
+        std::cout << "OK" << std::endl;
+        sim.runToStopTime();
+        std::cout << "OK" << std::endl;
+    }
     // sim.printMarkedLocations();
 
     // sim.advance();

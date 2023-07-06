@@ -8,9 +8,11 @@
 #include <chrono>
 #include <cmath>
 
+int SimulationDriver::simulation_number_ = 0;
+
 SimulationDriver::SimulationDriver(const Config &configs_struct)
 {
-
+    sim_ID_ = simulation_number_++;
     config_ = configs_struct;
     filename_ = config_.filename;
     simulation_save_dir_ = config_.save_dir;
@@ -36,12 +38,14 @@ SimulationDriver::SimulationDriver(const Config &configs_struct)
     diffusion_coeff_ = config_.diffusion_coefficient;
     timestep_size_ = config_.timestep_size;
     timestep_record_ = config_.record_per_s;
+    stop_time_ = config_.stop_time;
     p_entry_ = config_.p_entry;
     p_exit_ = config_.p_exit;
     p_reaction_ = config_.p_reaction;
     num_holes_ = config_.num_holes;
     hole_width_ = config_.hole_width;
     precision_epsilon_ = config_.precision_epsilon;
+    record_frames_ = config_.record_frames;
 
     // add parameter values to filename
     filename_ += "_nH" + std::to_string(num_holes_);
@@ -49,11 +53,11 @@ SimulationDriver::SimulationDriver(const Config &configs_struct)
     filename_ += "_pRX" + std::to_string(p_reaction_);
     filename_ += "_pI" + std::to_string(p_entry_);
     filename_ += "_pO" + std::to_string(p_exit_);
-    std::cout << filename_ << std::endl;
+    filename_ += "_s" + std::to_string(sim_ID_);
+    std::cout << simulation_time_stamp_header_ + "_"+filename_ << std::endl;
 
     // simulation_axis_(axis_len_, p_reaction_, diffusion_coeff_);
     simulation_axis_ = std::make_unique<Axis>(axis_len_, p_reaction_, diffusion_coeff_);
-
 }
 
 std::string SimulationDriver::getSimulationTimeStamp() const
@@ -69,8 +73,8 @@ void SimulationDriver::printSimulationHeader() const
 void SimulationDriver::generateSimulation()
 {
     simulation_axis_->addHoles(num_holes_,
-                              hole_width_,
-                              p_entry_, p_exit_);
+                               hole_width_,
+                               p_entry_, p_exit_);
 }
 void SimulationDriver::preSeedAtHoles()
 {
@@ -113,9 +117,9 @@ void SimulationDriver::printMarkedLocations() const
     }
 }
 
-void SimulationDriver::saveMarkedPts2File(std::string save_path)
+void SimulationDriver::saveMarkedPts2File(std::string save_filename)
 {
-    std::cout << save_path << std::endl;
+    std::string save_path = simulation_save_dir_ + "/" + save_filename;
     std::ofstream outfile(save_path);
     if (outfile.is_open())
     {
@@ -165,7 +169,6 @@ void SimulationDriver::runUntil(float stop_time)
     }
 }
 
-
 void SimulationDriver::runToStopTime()
 {
     while (timestamp_ < stop_time_)
@@ -173,7 +176,6 @@ void SimulationDriver::runToStopTime()
         advance();
         if (record_frames_ && (std::fabs(std::remainder(timestamp_, timestep_record_)) < precision_epsilon_))
         {
-            std::cout << "OK2 " << timestamp_ << std::endl;
             std::string filename = getSimulationTimeStamp() + "_" + filename_ + "_" + std::to_string(timestamp_) + ".txt";
             saveMarkedPts2File(filename);
         }

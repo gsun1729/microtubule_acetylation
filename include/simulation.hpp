@@ -13,6 +13,8 @@ class SimulationDriver
     std::string filename_;
     std::string simulation_time_stamp_header_;
     std::string simulation_save_dir_;
+    static int simulation_number_;
+    int sim_ID_;
 
     float axis_len_;
     float diffusion_coeff_;
