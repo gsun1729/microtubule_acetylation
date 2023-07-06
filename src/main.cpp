@@ -1,69 +1,91 @@
 #include <iostream>
-#include "probability.hpp"
-#include "config.hpp"
-#include "objects.hpp"
-#include "axis.hpp"
 #include <stdexcept>
 #include <iomanip>
 #include <chrono>
 #include <thread>
 #include <stdlib.h>
-class Simulation
-{
-public:
-   void test()
-   {
-      Hole H = Hole(0, 0.5, 0, 0);
-      float rand_pos = rand() / double(RAND_MAX);
-      Particle p = Particle(rand_pos, 0.1, 0.1);
+#include <vector>
 
-      bool p_inside_H = H.isParticleInside(p);
-      std::cout << "in\t" << p_inside_H << std::endl;
-   }
-};
+#include "probability.hpp"
+#include "config.hpp"
+#include "objects.hpp"
+#include "simulation.hpp"
 
 int main(int argc, char *argv[])
 {
-   // std::cout << config.diffusion_coefficient << std::endl;
+    // std::cout << config.diffusion_coefficient << std::endl;
+    std::cout << "=====" << std::endl;
+    SimulationDriver sim{0.01, 1.0};
+    sim.printSimulationHeader();
+    sim.generateSimulation();
+    sim.printHoleLocations();
+    sim.printParticleLocations();
+    sim.printMarkedLocations();
+    sim.preSeedAtHoles();
 
-   std::cout << "=====" << std::endl;
+    std::cout << "=====" << std::endl;
+    sim.printTimestamp();
+    sim.printHoleLocations();
+    sim.printParticleLocations();
+    sim.printMarkedLocations();
 
-   std::vector<std::shared_ptr<Particle>> particles(10);
+    sim.advance();
+    std::cout << "=====" << std::endl;
+    sim.printTimestamp();
+    sim.printHoleLocations();
+    sim.printParticleLocations();
+    sim.printMarkedLocations();
+    std::cout << "=====" << std::endl;
+    sim.runUntil(.05, false);
+    std::cout << "=====" << std::endl;
+    sim.printTimestamp();
+    sim.printHoleLocations();
+    sim.printParticleLocations();
+    sim.printMarkedLocations();
+    // std::cout << "=====" << std::endl;
+    // Axis a;
+    // a.printDimensions();
+    // std::cout << "=====" << std::endl;
+    // a.addHoles(1.0,1.0,0.0);
+    // a.printHoleLocations();
+    // a.addHoles(1,1.0);
+    // std::cout<<std::endl;
+    // a.addHoles(3,1.0);
+    // std::cout<<std::endl;
+    // a.addHoles(7,1.0);
+    // a.printHoleLocations();
+    // std::cout << "=====" << std::endl;
 
-   srand(time(NULL));
-   float rand_pos;
-   for (auto &particle : particles)
-   {
-      rand_pos = rand() / double(RAND_MAX);
-      particle = std::make_shared<Particle>(rand_pos, 0.1, 0.1);
-      std::cout << particle->getId() << "\t" << particle->getPosition() << std::endl;
-   }
+    // std::vector<std::shared_ptr<Particle>> particles(10);
 
-   for (auto &particle : particles)
-   {
-      particle->Move(0.1);
-      std::cout << particle->getPosition() << std::endl;
-   }
+    // srand(time(NULL));
+    // float rand_pos;
+    // for (auto &particle : particles)
+    // {
+    // 	rand_pos = rand() / double(RAND_MAX);
+    // 	particle = std::make_shared<Particle>(rand_pos, 0.1, 0.1);
+    // 	std::cout << particle->getId() << "\t" << particle->getPosition() << std::endl;
+    // }
 
-   Particle test = Particle(0,0,0.5);
-   for (int i = 0; i < 20; i ++){
-      std::cout<<test.HasReacted()<<std::endl;
-   }
+    // for (auto &particle : particles)
+    // {
+    // 	particle->Move(0.1);
+    // 	std::cout << particle->getPosition() << std::endl;
+    // }
 
-   return 0;
-   // std::vector<std::thread> threads;
+    // std::vector<std::thread> threads;
 
-   // for (int i = 0; i <= 5; i++)
-   // {
-   //    Simulation *sim = new Simulation();
+    // for (int i = 0; i <= 5; i++)
+    // {
+    //    Simulation *sim = new Simulation();
 
-   //    threads.push_back(std::thread(&Simulation::test, sim));
-   // }
+    //    threads.push_back(std::thread(&Simulation::test, sim));
+    // }
 
-   // for (auto &thread : threads)
-   // {
-   //    thread.join();
-   // }
+    // for (auto &thread : threads)
+    // {
+    //    thread.join();
+    // }
 
-   return 0;
+    return 0;
 }
