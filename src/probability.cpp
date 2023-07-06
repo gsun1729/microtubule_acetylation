@@ -2,14 +2,14 @@
 
 bool isRandomSampleGreaterThanValue(float cutoff){
   /**Function generates a number from range of 0-1;
-  If random value is greater than cutoff, return true, else
-  return false.
+  If random value is greater than cutoff, return false, else
+  return true.
   **/
   static std::random_device rd;
   static std::mt19937 gen(rd());
   std::uniform_real_distribution<> dis(0.0, 1.0);
   float sample = dis(gen);
-  return sample > cutoff;
+  return sample < cutoff;
 }
 
 float sampleUniformDistribution(){
