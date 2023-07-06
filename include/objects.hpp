@@ -53,6 +53,9 @@ class Axis
     float end_position_;
     float center_position_{0};
 
+    float p_reaction_;
+    float diffusion_coeff_;
+
     int num_holes_{-1};
     float hole_width_{-1};
     float hole_separation_{-1};
@@ -62,15 +65,15 @@ class Axis
     std::vector<std::shared_ptr<Particle>> particle_list_;
 
 public:
-    Axis();
-    Axis(float start_pos, float end_pos);
-    bool isHoleDuplicate(const Hole&hole);
+    Axis(float length, float p_reaction, float diff_coeff);
+    Axis(float start_pos, float end_pos, float p_reaction, float diff_coeff);
+    bool isHoleDuplicate(const Hole &hole);
     void addHole(const Hole &hole);
-    void addHoles(int num_holes, float hole_width);
-    void addHoles(float hole_width, float hole_separation, float seed_pt);
-    const std::vector<Hole>& getHoles() const;
-    const std::vector<std::shared_ptr<Particle>>& getParticles() const;
-    const std::vector<float>& getMarkedPts() const;
+    void addHoles(int num_holes, float hole_width, float p_entry, float p_exit);
+    void addHoles(float hole_width, float hole_separation, float seed_pt, float p_entry, float p_exit);
+    const std::vector<Hole> &getHoles() const;
+    const std::vector<std::shared_ptr<Particle>> &getParticles() const;
+    const std::vector<float> &getMarkedPts() const;
     void addParticle(std::shared_ptr<Particle> particle);
     void rmParticle(std::shared_ptr<Particle> particle);
     // move all particles along the axis

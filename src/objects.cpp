@@ -9,14 +9,9 @@
 
 int Particle::next_id_ = 0;
 
-const Config config;
-
-Particle::Particle()
+Particle::Particle() : position_{0}, diff_coeff_{0}, p_reaction_{0}
 {
     id_ = next_id_++;
-    position_ = 0;
-    diff_coeff_ = config.diffusion_coefficient;
-    p_reaction_ = config.p_reaction;
 }
 
 Particle::Particle(float pos, float diff_coeff, float p_reaction)
@@ -137,16 +132,19 @@ void Hole::printSelf() const
     std::cout << "pOUT\t" << efluxProbability_ << "\n";
 }
 
-Axis::Axis()
+Axis::Axis(float length, float p_reaction, float diff_coeff) : length_{length},
+                                                               p_reaction_{p_reaction},
+                                                               diffusion_coeff_{diff_coeff}
 {
-    length_ = config.axis_len;
     start_position_ = center_position_ - length_ / 2.0;
     end_position_ = center_position_ + length_ / 2.0;
 }
 
-Axis::Axis(float start_pos, float end_pos)
+Axis::Axis(float start_pos, float end_pos, float p_reaction, float diff_coeff)
 {
     length_ = end_pos - start_pos;
+    p_reaction_ = p_reaction;
+    diffusion_coeff_ = diff_coeff;
     center_position_ = (start_pos + end_pos) / 2.0;
     start_position_ = start_pos;
     end_position_ = end_pos;
@@ -172,10 +170,10 @@ void Axis::addHole(const Hole &hole)
     hole_list_.push_back(hole);
     // Keep the list of holes sorted by their positions
     std::sort(hole_list_.begin(), hole_list_.end(), [](const Hole &a, const Hole &b)
-              { return a.getCenterPosition()  < b.getCenterPosition(); });
+              { return a.getCenterPosition() < b.getCenterPosition(); });
 }
 
-void Axis::addHoles(int num_holes, float hole_width)
+void Axis::addHoles(int num_holes, float hole_width, float p_entry, float p_exit)
 {
     if (num_holes * hole_width > length_)
     {
@@ -188,14 +186,14 @@ void Axis::addHoles(int num_holes, float hole_width)
     for (int i = 0; i < num_holes_; i++)
     {
         Hole newHole(start_position_ + (length_ * (i + 1) / (num_holes_ + 1)),
-                     config.divider_width,
-                     config.p_entry,
-                     config.p_exit);
+                     hole_width,
+                     p_entry,
+                     p_exit);
         this->addHole(newHole);
     }
 }
 
-void Axis::addHoles(float hole_width, float hole_separation, float seed_pos)
+void Axis::addHoles(float hole_width, float hole_separation, float seed_pos, float p_entry, float p_exit)
 {
     hole_width_ = hole_width;
     hole_separation_ = hole_separation;
@@ -203,9 +201,9 @@ void Axis::addHoles(float hole_width, float hole_separation, float seed_pos)
     float adder = 0.0;
     bool reach_front = false, reach_end = false;
     Hole newHole(seed_pos,
-                 config.divider_width,
-                 config.p_entry,
-                 config.p_exit);
+                 hole_width_,
+                 p_entry,
+                 p_exit);
     this->addHole(newHole);
     adder += hole_width_ + hole_separation_;
 
@@ -216,28 +214,28 @@ void Axis::addHoles(float hole_width, float hole_separation, float seed_pos)
         if (!reach_front)
         {
             Hole newHole(seed_pos - adder,
-                         config.divider_width,
-                         config.p_entry,
-                         config.p_exit);
+                         hole_width_,
+                         p_entry,
+                         p_exit);
             this->addHole(newHole);
         }
         if (!reach_end)
         {
             Hole newHole(seed_pos + adder,
-                         config.divider_width,
-                         config.p_entry,
-                         config.p_exit);
+                         hole_width_,
+                         p_entry,
+                         p_exit);
             this->addHole(newHole);
         }
         adder += hole_width_ + hole_separation_;
     }
 }
 
-const std::vector<Hole>& Axis::getHoles() const
+const std::vector<Hole> &Axis::getHoles() const
 {
     return hole_list_;
 }
-const std::vector<std::shared_ptr<Particle>>& Axis::getParticles() const
+const std::vector<std::shared_ptr<Particle>> &Axis::getParticles() const
 {
     return particle_list_;
 }
@@ -250,7 +248,7 @@ void Axis::addParticle(std::shared_ptr<Particle> particle)
 void Axis::rmParticle(std::shared_ptr<Particle> particle)
 {
     particle_list_.erase(std::remove_if(particle_list_.begin(), particle_list_.end(),
-                                        [&](const std::shared_ptr<Particle>& p)
+                                        [&](const std::shared_ptr<Particle> &p)
                                         {
                                             return p->getId() == particle->getId();
                                         }),
@@ -272,8 +270,8 @@ void Axis::handleHoles()
         if (isRandomSampleGreaterThanValue(hole.getInFluxProb()))
         {
             std::shared_ptr<Particle> new_particle = std::make_shared<Particle>(hole.getRandomPosition(),
-                                                                                /*diff_coeff=*/config.diffusion_coefficient,
-                                                                                /*p_reaction=*/config.p_reaction);
+                                                                                /*diff_coeff=*/diffusion_coeff_,
+                                                                                /*p_reaction=*/p_reaction_);
             addParticle(new_particle);
         }
 
@@ -316,14 +314,18 @@ void Axis::printParticlePositions() const
     }
 }
 
-void Axis::reactParticles() {
-    for (const auto &particle : particle_list_) {
-        if (particle->HasReacted()) {
+void Axis::reactParticles()
+{
+    for (const auto &particle : particle_list_)
+    {
+        if (particle->HasReacted())
+        {
             marked_pts_.push_back(particle->getPosition());
         }
     }
 }
 
-const std::vector<float>& Axis::getMarkedPts() const {
+const std::vector<float> &Axis::getMarkedPts() const
+{
     return marked_pts_;
 }
