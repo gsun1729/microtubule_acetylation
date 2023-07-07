@@ -1,0 +1,107 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+```{r}
+library(ggridges)
+library(ggplot2)
+library(viridis)
+# library(hrbrthemes)
+library(latex2exp)
+library(plyr)
+library(dplyr)
+library(ggsignif)
+library(Rmisc)
+library(ggforce)
+library(rstatix)
+library(stringr)
+# Define function for binsizing
+
+
+bins_fd <- function(vec) {
+  ceiling(diff(range(vec)) / (2 * IQR(vec) / length(vec)^(1/3)))
+}
+
+
+getFilenames <- function(root_directory, queries = '.csv'){
+  
+  # Check if queries is a list or string, convert to list if string
+  if(!is.list(queries)) {
+    queries <- list(queries)
+  }
+  
+  # Make queries lower case for case insensitive search
+  queries <- tolower(queries)
+  
+  # Get all filenames recursively
+  filelist <- list.files(root_directory, recursive = TRUE, full.names = TRUE)
+  
+  # Filter filenames based on queries and excluding those with '_thumb_'
+  img_filelist <- filelist[sapply(filelist, function(x) {
+    filename <- tolower(basename(x))
+    all(sapply(queries, function(q) grepl(q, filename))) & !grepl('_thumb_', filename)
+  })]
+  
+  # Sort the file list
+  img_filelist <- sort(img_filelist)
+  
+  return(img_filelist)
+}
+
+parse_filename <- function(filename) {
+  # Extract parts of filename
+  parts <- str_extract_all(filename, "w[0-9.]+|pRX[0-9.]+|t[0-9]+")[[1]]
+  
+  # Check if parsing was successful
+  if(length(parts) != 3) {
+    stop("Parsing failed: Check the filename format.")
+  }
+  
+  # Return as a string
+  return(paste(parts, collapse = "_"))
+}
+```
+
+# Read datasets
+```{r}
+filelist = getFilenames("datasets/",queries = ".csv")
+```
+
+```{r}
+# for (filepath in filelist){
+  df = read.csv(filepath)
+  title_name = parse_filename(filepath)
+  df <- df[(df$bin_center<=25)& (df$bin_center>=-25),]
+  df$nHoles<-factor(df$nHoles, levels = c(0, 1, 3, 7, 15, 31, 63))
+  plot_obj <-ggplot(df, aes(nHoles, bin_center, fill=density))+
+    geom_tile()+
+    ggtitle(title_name)+
+    scale_fill_viridis(discrete=F)+
+    theme_bw()+theme(axis.line = element_line(colour = "black"),
+                     panel.border = element_blank(),
+                     panel.grid.minor.y = element_blank(),
+                     panel.grid.major.x = element_blank(),
+                     panel.grid = element_blank(),
+                     axis.title.x = element_blank(),
+                     panel.background = element_blank(),
+                     legend.text=element_text(size = rel(1.5)),
+                     legend.title = element_text(size = rel(1.8)),
+                     legend.key.height = unit(1.25, "cm")
+    )+
+    ylab("Position")+
+    xlab("N Holes")+
+    labs(fill="Rxn")+
+    theme(axis.title.x = element_text(size = rel(1.8), angle = 00))+
+    theme(axis.title.y = element_text(size = rel(1.8), angle = 90)) +
+    theme(axis.text.x = element_text(angle = 00, hjust = 0.5, size=15,color="black"))+
+    theme(axis.text.y = element_text(angle = 00, hjust = 1, size=15,color="black"))+
+    scale_x_discrete(expand= c(0,0))+
+    scale_y_continuous(expand= c(0,0))
+  
+  png_filename <- sub("\\.csv$", ".png", filepath)
+  ggsave(filename=png_filename, plot=plot_obj, width=1500, height=1800, units="px")
+}
+```
+
+
