@@ -54,9 +54,7 @@ SimulationDriver::SimulationDriver(const Config &configs_struct)
     filename_ += "_pI" + std::to_string(p_entry_);
     filename_ += "_pO" + std::to_string(p_exit_);
     filename_ += "_s" + std::to_string(sim_ID_);
-    std::cout << simulation_time_stamp_header_ + "_"+filename_ << std::endl;
-
-    // simulation_axis_(axis_len_, p_reaction_, diffusion_coeff_);
+    // std::cout << simulation_time_stamp_header_ + "_"+filename_ << std::endl;
     simulation_axis_ = std::make_unique<Axis>(axis_len_, p_reaction_, diffusion_coeff_);
 }
 
@@ -160,10 +158,14 @@ void SimulationDriver::runUntil(float stop_time)
     while (timestamp_ < stop_time)
     {
         advance();
-        if (record_frames_ && (std::fabs(std::remainder(timestamp_, timestep_record_)) < precision_epsilon_))
+        int timestamp_ms = static_cast<int>(timestamp_ * 1000);
+        int timestep_record_ms = static_cast<int>(timestep_record_ * 1000);
+        if (record_frames_ && timestamp_ms % timestep_record_ms == 0)
         {
-            std::cout << "OK2 " << timestamp_ << std::endl;
-            std::string filename = getSimulationTimeStamp() + "_" + filename_ + "_" + std::to_string(timestamp_) + ".txt";
+            std::string filename = getSimulationTimeStamp() + "_" 
+                     + filename_ + "_" 
+                     + std::to_string(static_cast<int>(timestamp_)) 
+                     + ".txt";
             saveMarkedPts2File(filename);
         }
     }
@@ -174,9 +176,14 @@ void SimulationDriver::runToStopTime()
     while (timestamp_ < stop_time_)
     {
         advance();
-        if (record_frames_ && (std::fabs(std::remainder(timestamp_, timestep_record_)) < precision_epsilon_))
+        int timestamp_ms = static_cast<int>(timestamp_ * 1000);
+        int timestep_record_ms = static_cast<int>(timestep_record_ * 1000);
+        if (record_frames_ && timestamp_ms % timestep_record_ms == 0)
         {
-            std::string filename = getSimulationTimeStamp() + "_" + filename_ + "_" + std::to_string(timestamp_) + ".txt";
+            std::string filename = getSimulationTimeStamp() + "_" 
+                     + filename_ + "_" 
+                     + std::to_string(static_cast<int>(timestamp_)) 
+                     + ".txt";
             saveMarkedPts2File(filename);
         }
     }
