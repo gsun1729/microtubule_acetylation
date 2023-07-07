@@ -21,6 +21,28 @@ void runSimulation(const Config &config, int iter)
 
 int main(int argc, char *argv[])
 {
+    Config baseline_configs;
+    std::cout<<"++++++++++++++++++++++++++++++++++++++++++++++++"<<std::endl;
+    std::cout<<"Baseline Configuration"<<std::endl;
+    std::cout<<"++++++++++++++++++++++++++++++++++++++++++++++++"<<std::endl;
+    std::cout<<"Run Name:\t"<<baseline_configs.filename<<std::endl;
+    std::cout<<"Save Dir:\t"<<baseline_configs.save_dir<<std::endl;
+    std::cout<<"======="<<std::endl;
+    std::cout<<"Timestep size:\t"<<std::to_string(baseline_configs.timestep_size)<<std::endl;
+    std::cout<<"Stop Time:\t"<<std::to_string(baseline_configs.stop_time)<<std::endl;
+    std::cout<<"Record Frames:\t"<<std::to_string(baseline_configs.record_frames)<<std::endl;
+    std::cout<<"Record per s:\t"<<std::to_string(baseline_configs.record_per_s)<<std::endl;
+    std::cout<<"======="<<std::endl;
+    std::cout<<"Axis Len:\t"<<std::to_string(baseline_configs.axis_len)<<std::endl;
+    std::cout<<"D Coefficient:\t"<<std::to_string(baseline_configs.diffusion_coefficient)<<std::endl;
+    std::cout<<"pEntry:\t"<<std::to_string(baseline_configs.p_entry)<<std::endl;
+    std::cout<<"pExit:\t"<<std::to_string(baseline_configs.p_exit)<<std::endl;
+    std::cout<<"pReaction:\t"<<std::to_string(baseline_configs.p_reaction)<<std::endl;
+    std::cout<<"Hole Width:\t"<<std::to_string(baseline_configs.hole_width)<<std::endl;
+    std::cout<<"Number of Holes:\t"<<std::to_string(baseline_configs.num_holes)<<std::endl;
+    std::cout<<"End Holes Present:\t"<<std::to_string(baseline_configs.end_holes)<<std::endl;
+    std::cout<<"++++++++++++++++++++++++++++++++++++++++++++++++"<<std::endl;
+
     std::vector<Config> config_list;
 
     for (float hole_width : {0.01, 0.015, 0.02})
