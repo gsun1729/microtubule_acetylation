@@ -44,3 +44,4 @@ bin
 include/config.hpp
 
 experiments/*.txt
+*.txt
