@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     {
         for (int num_holes : {0, 1, 3, 7, 15, 31, 63})
         {
-            for (float p_reaction : {0.00001, 0.0001})//, 0.001, 0.01})
+            for (float p_reaction : {0.00001, 0.0001, 0.001, 0.01})
             {
                 Config sub_config;
                 sub_config.hole_width = hole_width;
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 
     for (const Config &sub_config : config_list)
     {
-        for (int i = 0; i <=1; i++)
+        for (int i = 0; i <=100; i++)
         {
             // Wait for a free core if all are busy.
             if (threads.size() >= max_threads)

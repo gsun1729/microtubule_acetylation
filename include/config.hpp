@@ -3,8 +3,8 @@
 
 struct Config
 {
-    std::string filename = "testing_runs";
-    std::string save_dir = "experiments";
+    std::string filename = "passThruParticles";
+    std::string save_dir = "experiments_endHoles";
     float axis_len = 50;                // microtubule length in um
     float diffusion_coefficient = 0.27; // aTAT1 diffusion 1D um2/s
     float timestep_size = 0.001;
