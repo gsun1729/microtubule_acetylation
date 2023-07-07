@@ -329,3 +329,20 @@ const std::vector<float> &Axis::getMarkedPts() const
 {
     return marked_pts_;
 }
+
+void Axis::addEndHole(float hole_width, float p_entry, float p_exit)
+{
+    Hole front_hole(start_position_,
+                    hole_width_,
+                    p_entry,
+                    p_exit);
+    Hole end_hole(end_position_,
+                  hole_width_,
+                  p_entry,
+                  p_exit);
+    hole_list_.push_back(front_hole);
+    hole_list_.push_back(end_hole);
+    // Keep the list of holes sorted by their positions
+    std::sort(hole_list_.begin(), hole_list_.end(), [](const Hole &a, const Hole &b)
+              { return a.getCenterPosition() < b.getCenterPosition(); });
+}

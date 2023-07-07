@@ -71,6 +71,7 @@ public:
     void addHole(const Hole &hole);
     void addHoles(int num_holes, float hole_width, float p_entry, float p_exit);
     void addHoles(float hole_width, float hole_separation, float seed_pt, float p_entry, float p_exit);
+    void addEndHole(float hole_width, float p_entry, float p_exit);
     const std::vector<Hole> &getHoles() const;
     const std::vector<std::shared_ptr<Particle>> &getParticles() const;
     const std::vector<float> &getMarkedPts() const;

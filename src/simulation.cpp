@@ -43,6 +43,7 @@ SimulationDriver::SimulationDriver(const Config &configs_struct)
     p_exit_ = config_.p_exit;
     p_reaction_ = config_.p_reaction;
     num_holes_ = config_.num_holes;
+    end_holes_ = config_.end_holes;
     hole_width_ = config_.hole_width;
     precision_epsilon_ = config_.precision_epsilon;
     record_frames_ = config_.record_frames;
@@ -73,6 +74,11 @@ void SimulationDriver::generateSimulation()
     simulation_axis_->addHoles(num_holes_,
                                hole_width_,
                                p_entry_, p_exit_);
+    if (end_holes_)
+    {
+        simulation_axis_->addEndHole(hole_width_,
+                                     p_entry_, p_exit_);
+    }
 }
 void SimulationDriver::preSeedAtHoles()
 {
@@ -162,10 +168,7 @@ void SimulationDriver::runUntil(float stop_time)
         int timestep_record_ms = static_cast<int>(timestep_record_ * 1000);
         if (record_frames_ && timestamp_ms % timestep_record_ms == 0)
         {
-            std::string filename = getSimulationTimeStamp() + "_" 
-                     + filename_ + "_" 
-                     + std::to_string(static_cast<int>(timestamp_)) 
-                     + ".txt";
+            std::string filename = getSimulationTimeStamp() + "_" + filename_ + "_" + std::to_string(static_cast<int>(timestamp_)) + ".txt";
             saveMarkedPts2File(filename);
         }
     }
@@ -180,10 +183,7 @@ void SimulationDriver::runToStopTime()
         int timestep_record_ms = static_cast<int>(timestep_record_ * 1000);
         if (record_frames_ && timestamp_ms % timestep_record_ms == 0)
         {
-            std::string filename = getSimulationTimeStamp() + "_" 
-                     + filename_ + "_" 
-                     + std::to_string(static_cast<int>(timestamp_)) 
-                     + ".txt";
+            std::string filename = getSimulationTimeStamp() + "_" + filename_ + "_" + std::to_string(static_cast<int>(timestamp_)) + ".txt";
             saveMarkedPts2File(filename);
         }
     }

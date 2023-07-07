@@ -19,6 +19,7 @@ struct Config
     float p_reaction = 0.00001; //per frame
     float hole_width = 0.015; // defect size 10-20nm
     int num_holes = 3;
+    bool end_holes{true};
 
     float precision_epsilon = 0.001;
     int simulation_number = 0;

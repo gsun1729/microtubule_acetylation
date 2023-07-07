@@ -31,6 +31,7 @@ class SimulationDriver
 
     float stop_time_;
     bool record_frames_{false};
+    bool end_holes_{false};
     float timestamp_{0.0};
     float precision_epsilon_;
     std::unique_ptr<Axis> simulation_axis_;
