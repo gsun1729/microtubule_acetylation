@@ -41,11 +41,11 @@ bin
 
 
 # ignore configuration files (for now)
-include/config.hpp
+# include/config.hpp
 
 experiments/*.txt
 *.txt
-*.png
-*.csv
+# *.png
+# *.csv
 .Rhistory
 *.pyc
